@@ -272,7 +272,7 @@ export default function CreateCustomerPage() {
   const inputStyle: React.CSSProperties = {
     width: '100%',
     padding: '0.75rem',
-    border: '1px solid #e5e7eb',
+    border: '1px solid var(--border)',
     borderRadius: '8px',
     fontSize: '0.9375rem',
     transition: 'all 0.2s'
@@ -287,20 +287,20 @@ export default function CreateCustomerPage() {
   }
 
   const sectionStyle: React.CSSProperties = {
-    background: 'white',
+    background: 'var(--surface)',
     padding: '1.5rem',
     borderRadius: '12px',
-    border: '1px solid #e5e7eb',
+    border: '1px solid var(--border)',
     marginBottom: '1.5rem'
   }
 
   const sectionTitleStyle: React.CSSProperties = {
     fontSize: '1.125rem',
     fontWeight: 700,
-    color: '#2563eb',
+    color: 'var(--primary-color)',
     marginBottom: '1rem',
     paddingBottom: '0.75rem',
-    borderBottom: '2px solid #e5e7eb'
+    borderBottom: '2px solid var(--border)'
   }
 
   return (
@@ -317,10 +317,10 @@ export default function CreateCustomerPage() {
       {error && (
         <div style={{ 
           padding: '1rem', 
-          background: '#fef2f2', 
-          border: '1px solid #fecaca', 
+          background: 'var(--error-bg, #fef2f2)', 
+          border: '1px solid var(--error-border, #fecaca)', 
           borderRadius: '8px',
-          color: '#991b1b',
+          color: 'var(--error-text, #991b1b)',
           marginBottom: '1rem'
         }}>
           {error}
@@ -330,10 +330,10 @@ export default function CreateCustomerPage() {
       {success && (
         <div style={{ 
           padding: '1rem', 
-          background: '#f0fdf4', 
-          border: '1px solid #bbf7d0', 
+          background: 'var(--success-bg, #f0fdf4)', 
+          border: '1px solid var(--success-border, #bbf7d0)', 
           borderRadius: '8px',
-          color: '#166534',
+          color: 'var(--success-text, #166534)',
           marginBottom: '1rem'
         }}>
           Customer created successfully! Redirecting...
@@ -593,7 +593,7 @@ export default function CreateCustomerPage() {
 
           <div style={{ marginBottom: '1rem' }}>
             <label style={labelStyle}>Penerima Manfaat Sebenarnya */**</label>
-            <div style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.5rem' }}>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
               Dokumen identifikasi diverifikasi bagi Penerima Sebenarnya Manfaat 15%
             </div>
             <textarea
@@ -607,7 +607,7 @@ export default function CreateCustomerPage() {
 
           <div style={{ marginBottom: '1rem' }}>
             <label style={labelStyle}>Direktur / Mitra / Penandatangan Resmi */**</label>
-            <div style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.5rem' }}>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
               (Sebutkan jabatan lengkap)
             </div>
             <textarea
@@ -621,7 +621,7 @@ export default function CreateCustomerPage() {
 
           <div style={{ marginBottom: '1rem' }}>
             <label style={labelStyle}>Potensi Kegiatan Usaha */**</label>
-            <div style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.5rem' }}>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
               Harap jelaskan potensi kegiatan bisnis
             </div>
             <textarea
@@ -635,7 +635,7 @@ export default function CreateCustomerPage() {
 
           <div style={{ marginBottom: '1rem' }}>
             <label style={labelStyle}>Kuantitas dan Frekuensi yang Diharapkan */**</label>
-            <div style={{ fontSize: '0.75rem', color: '#6b7280', marginBottom: '0.5rem' }}>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
               Harap berikan rincian berdasarkan komoditas
             </div>
             <textarea
@@ -786,7 +786,7 @@ export default function CreateCustomerPage() {
                 }}
                 accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls"
               />
-              <p style={{ fontSize: '0.875rem', color: '#6b7280', marginTop: '0.5rem' }}>
+              <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
                 Format yang didukung: PDF, DOC, DOCX, JPG, PNG, XLSX, XLS
               </p>
               
@@ -802,7 +802,7 @@ export default function CreateCustomerPage() {
                         justifyContent: 'space-between',
                         alignItems: 'center',
                         padding: '0.5rem',
-                        backgroundColor: '#f3f4f6',
+                        backgroundColor: 'var(--surface-light)',
                         borderRadius: '4px',
                         marginBottom: '0.5rem'
                       }}>
@@ -813,7 +813,7 @@ export default function CreateCustomerPage() {
                           type="button"
                           onClick={() => removeFile(index)}
                           style={{
-                            backgroundColor: '#ef4444',
+                            backgroundColor: 'var(--danger, #ef4444)',
                             color: 'white',
                             border: 'none',
                             padding: '0.25rem 0.75rem',
@@ -839,7 +839,7 @@ export default function CreateCustomerPage() {
           
           {/* REFERENSI PIC KOMERSIL */}
           <div style={{ marginBottom: '1.5rem' }}>
-            <h3 style={{ fontSize: '0.95rem', fontWeight: '600', marginBottom: '0.75rem', color: '#1e40af' }}>
+            <h3 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '0.75rem', color: 'var(--primary-color)' }}>
               REFERENSI PIC KOMERSIL
             </h3>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
@@ -892,10 +892,10 @@ export default function CreateCustomerPage() {
 
           {/* KEGIATAN PENAGIHAN - REFERENSI PIC DEPARTEMEN KEUANGAN */}
           <div style={{ marginBottom: '1.5rem' }}>
-            <h3 style={{ fontSize: '0.95rem', fontWeight: '600', marginBottom: '0.75rem', color: '#1e40af' }}>
+            <h3 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '0.75rem', color: 'var(--primary-color)' }}>
               KEGIATAN PENAGIHAN
             </h3>
-            <h4 style={{ fontSize: '0.85rem', fontWeight: '500', marginBottom: '0.75rem', color: '#4b5563' }}>
+            <h4 style={{ fontSize: '0.85rem', fontWeight: '500', marginBottom: '0.75rem', color: 'var(--text-secondary)' }}>
               REFERENSI PIC DEPARTEMEN KEUANGAN
             </h4>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
@@ -937,7 +937,7 @@ export default function CreateCustomerPage() {
 
           {/* REFERENSI BANK */}
           <div style={{ marginBottom: '1rem' }}>
-            <h3 style={{ fontSize: '0.95rem', fontWeight: '600', marginBottom: '0.75rem', color: '#1e40af' }}>
+            <h3 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '0.75rem', color: 'var(--primary-color)' }}>
               REFERENSI BANK
             </h3>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
@@ -979,10 +979,10 @@ export default function CreateCustomerPage() {
 
           {/* Informasi Email dan Pernyataan */}
           <div style={{ marginTop: '2rem', marginBottom: '1.5rem', textAlign: 'center' }}>
-            <p style={{ fontSize: '0.85rem', color: '#dc2626', fontStyle: 'italic', marginBottom: '1rem' }}>
+            <p style={{ fontSize: '0.85rem', color: 'var(--error-text, #dc2626)', fontStyle: 'italic', marginBottom: '1rem' }}>
               Silakan kirimkan formulir dan dokumen pendukung melalui email ke: <strong>grains@gcu.co.id</strong>
             </p>
-            <p style={{ fontSize: '0.85rem', color: '#374151', textAlign: 'center', lineHeight: '1.6', marginBottom: '1.5rem' }}>
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-primary)', textAlign: 'center', lineHeight: '1.6', marginBottom: '1.5rem' }}>
               Dengan ini saya menyatakan bahwa yang menandatangani di bawah ini adalah orang yang berwenang sesuai akta dan informasi yang diberikan adalah benar
             </p>
             
@@ -1024,7 +1024,7 @@ export default function CreateCustomerPage() {
 
           {/* PERSETUJUAN DEPARTEMEN INTERNAL */}
           <div style={{ marginBottom: '1.5rem', marginTop: '2rem' }}>
-            <h3 style={{ fontSize: '0.95rem', fontWeight: '700', marginBottom: '0.75rem', color: '#ffffff', backgroundColor: '#1e3a8a', padding: '0.5rem 1rem' }}>
+            <h3 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.75rem', color: 'var(--on-primary, #ffffff)', backgroundColor: 'var(--primary-color)', padding: '0.5rem 1rem' }}>
               PERSETUJUAN DEPARTEMEN INTERNAL
             </h3>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
@@ -1055,7 +1055,7 @@ export default function CreateCustomerPage() {
 
           {/* PERSETUJUAN DEPARTEMEN KEUANGAN DAN IT */}
           <div style={{ marginBottom: '1rem' }}>
-            <h3 style={{ fontSize: '0.95rem', fontWeight: '700', marginBottom: '0.75rem', color: '#ffffff', backgroundColor: '#1e3a8a', padding: '0.5rem 1rem' }}>
+            <h3 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.75rem', color: 'var(--on-primary, #ffffff)', backgroundColor: 'var(--primary-color)', padding: '0.5rem 1rem' }}>
               PERSETUJUAN DEPARTEMEN KEUANGAN DAN IT
             </h3>
             
@@ -1078,7 +1078,7 @@ export default function CreateCustomerPage() {
                   name="financeDivision"
                   value={formData.financeDivision}
                   disabled
-                  style={{...inputStyle, background: '#f3f4f6', cursor: 'not-allowed'}}
+                  style={{...inputStyle, background: 'var(--surface-light)', cursor: 'not-allowed'}}
                   placeholder="Auto-filled from user division"
                 />
               </div>
@@ -1329,9 +1329,9 @@ export default function CreateCustomerPage() {
               padding: '0.875rem 1.5rem',
               fontSize: '0.9375rem',
               fontWeight: 600,
-              background: 'white',
-              color: '#6b7280',
-              border: '1px solid #e5e7eb',
+              background: 'var(--surface)',
+              color: 'var(--text-secondary)',
+              border: '1px solid var(--border)',
               borderRadius: '10px',
               cursor: loading ? 'not-allowed' : 'pointer',
               transition: 'all 0.2s'
@@ -1346,7 +1346,7 @@ export default function CreateCustomerPage() {
               padding: '0.875rem 1.5rem',
               fontSize: '0.9375rem',
               fontWeight: 700,
-              background: loading ? '#9ca3af' : 'linear-gradient(135deg, #10b981, #059669)',
+              background: loading ? 'var(--muted, #9ca3af)' : 'linear-gradient(135deg, #10b981, #059669)',
               color: 'white',
               border: 'none',
               borderRadius: '10px',

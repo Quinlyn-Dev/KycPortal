@@ -12,6 +12,23 @@ interface SignaturePadProps {
 export const SignaturePad = ({ value, onChange, label, width = 400, height = 150 }: SignaturePadProps) => {
   const sigPadRef = useRef<SignatureCanvas>(null)
 
+  const getVar = (name: string, fallback: string) => {
+    if (typeof window === 'undefined') return fallback
+    try {
+      const v = getComputedStyle(document.documentElement).getPropertyValue(name)
+      return (v && v.trim()) || fallback
+    } catch (e) {
+      return fallback
+    }
+  }
+
+  const labelColor = getVar('--text-primary', '#374151')
+  const borderColor = getVar('--border', '#e5e7eb')
+  const surfaceColor = getVar('--surface', '#ffffff')
+  const dangerColor = getVar('--danger', '#ef4444')
+  const dangerHover = getVar('--danger-hover', '#dc2626')
+  const penColor = getVar('--text-primary', 'black')
+
   useEffect(() => {
     if (value && sigPadRef.current && sigPadRef.current.isEmpty()) {
       try {
@@ -40,16 +57,16 @@ export const SignaturePad = ({ value, onChange, label, width = 400, height = 150
         display: 'block', 
         marginBottom: '0.5rem', 
         fontWeight: 600, 
-        color: '#374151',
+        color: labelColor,
         fontSize: '0.875rem'
       }}>
         {label}
       </label>
       <div style={{ 
-        border: '2px solid #e5e7eb', 
+        border: `2px solid ${borderColor}`, 
         borderRadius: '8px', 
         overflow: 'hidden',
-        backgroundColor: '#ffffff',
+        backgroundColor: surfaceColor,
         display: 'inline-block'
       }}>
         <SignatureCanvas
@@ -62,8 +79,8 @@ export const SignaturePad = ({ value, onChange, label, width = 400, height = 150
               touchAction: 'none'
             }
           }}
-          backgroundColor="white"
-          penColor="black"
+          backgroundColor={surfaceColor}
+          penColor={penColor}
           onEnd={handleEnd}
         />
       </div>
@@ -73,7 +90,7 @@ export const SignaturePad = ({ value, onChange, label, width = 400, height = 150
           onClick={handleClear}
           style={{
             padding: '0.5rem 1rem',
-            backgroundColor: '#ef4444',
+            backgroundColor: dangerColor,
             color: 'white',
             border: 'none',
             borderRadius: '6px',
@@ -82,8 +99,8 @@ export const SignaturePad = ({ value, onChange, label, width = 400, height = 150
             cursor: 'pointer',
             transition: 'background-color 0.2s'
           }}
-          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#dc2626'}
-          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#ef4444'}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = dangerHover}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = dangerColor}
         >
           🗑️ Clear Signature
         </button>
