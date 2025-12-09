@@ -21,6 +21,8 @@ function DashboardLayout({ children }: DashboardLayoutProps) {
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null)
   const [submenuPosition, setSubmenuPosition] = useState<{ top: number } | null>(null)
   const sidebarRef = useRef<HTMLDivElement | null>(null)
+  const hoverTimeoutRef = useRef<number | null>(null)
+  const submenuRef = useRef<HTMLUListElement | null>(null)
   const [currentDateTime, setCurrentDateTime] = useState(new Date())
 
   useEffect(() => {
@@ -82,7 +84,6 @@ function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const filteredMenuItems = menuItems
     .map(item => {
-      // if parent with children, filter children by roles
       if (item.children) {
         const children = item.children.filter((child: any) => !child.roles || child.roles.includes(user?.role || ''))
         if (children.length === 0) return null
@@ -177,27 +178,68 @@ function DashboardLayout({ children }: DashboardLayoutProps) {
                     role="button"
                     tabIndex={0}
                     onClick={(e) => {
+                      // Do not open/close submenu on click when sidebar is collapsed
+                      if (isSidebarCollapsed) {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        return
+                      }
+                      // When sidebar is expanded, allow toggling via click
                       e.preventDefault()
                       e.stopPropagation()
-                      // Toggle submenu on click
                       const newValue = openSubmenu === item.label ? null : item.label
                       setOpenSubmenu(newValue)
-                      
-                      // Calculate position for fixed positioning
                       if (newValue) {
-                        const rect = e.currentTarget.getBoundingClientRect()
-                        setSubmenuPosition({ top: rect.top })
+                        const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
+                        // Position submenu centered to the parent element vertically
+                        window.requestAnimationFrame(() => {
+                          const submenuEl = submenuRef.current
+                          const submenuH = submenuEl ? submenuEl.offsetHeight : 0
+                          let top = rect.top + rect.height / 2 - submenuH / 2
+                          const padding = 8
+                          const maxTop = window.innerHeight - submenuH - padding
+                          if (top < padding) top = padding
+                          if (top > maxTop) top = Math.max(padding, maxTop)
+                          setSubmenuPosition({ top })
+                        })
                       } else {
                         setSubmenuPosition(null)
                       }
-                      
-                      console.log('Menu clicked:', item.label, 'Sidebar collapsed:', isSidebarCollapsed, 'New state:', newValue)
                     }}
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
+                      // Only trigger keyboard toggle when sidebar is expanded
+                      if ((e.key === 'Enter' || e.key === ' ') && !isSidebarCollapsed) {
                         e.preventDefault()
                         ;(e.currentTarget as HTMLElement).click()
                       }
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isSidebarCollapsed) return
+                      if (hoverTimeoutRef.current) {
+                        window.clearTimeout(hoverTimeoutRef.current)
+                        hoverTimeoutRef.current = null
+                      }
+                      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
+                      // Compute centered top position after submenu renders
+                      setOpenSubmenu(item.label)
+                      window.requestAnimationFrame(() => {
+                        const submenuEl = submenuRef.current
+                        const submenuH = submenuEl ? submenuEl.offsetHeight : 0
+                        let top = rect.top + rect.height / 2 - submenuH / 2
+                        const padding = 8
+                        const maxTop = window.innerHeight - submenuH - padding
+                        if (top < padding) top = padding
+                        if (top > maxTop) top = Math.max(padding, maxTop)
+                        setSubmenuPosition({ top })
+                      })
+                    }}
+                    onMouseLeave={() => {
+                      if (!isSidebarCollapsed) return
+                      // small delay to allow moving into submenu
+                      hoverTimeoutRef.current = window.setTimeout(() => {
+                        setOpenSubmenu((cur) => (cur === item.label ? null : cur))
+                        hoverTimeoutRef.current = null
+                      }, 180)
                     }}
                   >
                     <span>{item.icon}</span>
@@ -205,9 +247,23 @@ function DashboardLayout({ children }: DashboardLayoutProps) {
                   </div>
                   <ul
                     className={`sidebar-submenu ${openSubmenu === item.label ? 'open' : ''}`}
+                    ref={submenuRef}
                     style={{
                       ...(openSubmenu === item.label && submenuPosition ? { top: `${submenuPosition.top}px` } : {}),
                       display: openSubmenu === item.label ? 'block' : undefined
+                    }}
+                    onMouseEnter={() => {
+                      if (hoverTimeoutRef.current) {
+                        window.clearTimeout(hoverTimeoutRef.current)
+                        hoverTimeoutRef.current = null
+                      }
+                    }}
+                    onMouseLeave={() => {
+                      // close submenu after small delay
+                      hoverTimeoutRef.current = window.setTimeout(() => {
+                        setOpenSubmenu(null)
+                        hoverTimeoutRef.current = null
+                      }, 180)
                     }}
                   >
                     {item.children.map((child: any) => (
@@ -219,7 +275,8 @@ function DashboardLayout({ children }: DashboardLayoutProps) {
                           onClick={(e) => {
                             e.preventDefault()
                             navigate(child.path)
-                            setOpenSubmenu(null)
+                            // delay closing slightly so the popover doesn't visually jump
+                            window.setTimeout(() => setOpenSubmenu(null), 160)
                           }}
                         >
                           <span>{child.icon}</span>
